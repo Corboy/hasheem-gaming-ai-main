@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 6%;
+    --foreground: 180 10% 92%;
+
+    --card: 220 18% 10%;
+    --card-foreground: 180 10% 92%;
+
+    --popover: 220 18% 10%;
+    --popover-foreground: 180 10% 92%;
+
+    --primary: 170 100% 50%;
+    --primary-foreground: 220 20% 6%;
+
+    --secondary: 220 15% 16%;
+    --secondary-foreground: 180 10% 92%;
+
+    --muted: 220 15% 14%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 330 90% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 170 100% 50%;
+
+    --radius: 0.5rem;
+
+    --neon-glow: 0 0 20px hsl(170 100% 50% / 0.4), 0 0 60px hsl(170 100% 50% / 0.15);
+    --neon-glow-strong: 0 0 10px hsl(170 100% 50% / 0.6), 0 0 40px hsl(170 100% 50% / 0.3), 0 0 80px hsl(170 100% 50% / 0.1);
+    --accent-glow: 0 0 20px hsl(330 90% 55% / 0.4), 0 0 60px hsl(330 90% 55% / 0.15);
+
+    --sidebar-background: 220 18% 10%;
+    --sidebar-foreground: 180 10% 92%;
+    --sidebar-primary: 170 100% 50%;
+    --sidebar-primary-foreground: 220 20% 6%;
+    --sidebar-accent: 220 15% 16%;
+    --sidebar-accent-foreground: 180 10% 92%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 170 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .font-body {
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  .neon-text {
+    text-shadow: 0 0 10px hsl(170 100% 50% / 0.6), 0 0 30px hsl(170 100% 50% / 0.3);
+  }
+
+  .neon-border {
+    box-shadow: var(--neon-glow);
+    border-color: hsl(170 100% 50% / 0.5);
+  }
+
+  .neon-border-strong {
+    box-shadow: var(--neon-glow-strong);
+    border-color: hsl(170 100% 50%);
+  }
+
+  .accent-glow {
+    box-shadow: var(--accent-glow);
+  }
+
+  .game-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .game-card-hover:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--neon-glow-strong);
+  }
+
+  .gradient-hero {
+    background: linear-gradient(180deg, transparent 0%, hsl(220 20% 6% / 0.4) 40%, hsl(220 20% 6% / 0.95) 100%);
+  }
+
+  .gradient-section {
+    background: linear-gradient(180deg, hsl(220 20% 6%) 0%, hsl(220 18% 8%) 50%, hsl(220 20% 6%) 100%);
+  }
+}
