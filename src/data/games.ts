@@ -13,7 +13,7 @@ import game12 from "@/assets/game12.jpg";
 import game1ss1 from "@/assets/game1-ss1.jpg";
 import game2ss1 from "@/assets/game2-ss1.jpg";
 
-export type Platform = "PC" | "Laptop" | "PlayStation";
+export type Platform = "PC" | "Mobile" | "PlayStation";
 
 export interface Game {
   id: string;
@@ -57,7 +57,7 @@ export const games: Game[] = [
     price: "$49.99",
     rating: 4,
     genre: "FPS Shooter",
-    platforms: ["PC", "PlayStation", "Laptop"],
+    platforms: ["PC", "PlayStation", "Mobile"],
     description: "In the neon-soaked streets of New Shanghai, corporate armies wage war for control. You are Agent Zero, an elite operative caught between megacorporations in a deadly game of espionage. Featuring hyper-realistic gunplay, cybernetic augmentations, and a gripping 20-hour campaign with branching endings.",
     releaseDate: "2026-01-20",
     developer: "NeonByte Interactive",
@@ -73,7 +73,7 @@ export const games: Game[] = [
     originalPrice: "$44.99",
     rating: 4,
     genre: "Racing",
-    platforms: ["PC", "PlayStation", "Laptop"],
+    platforms: ["PC", "PlayStation", "Mobile"],
     description: "Push the limits of speed in the most exhilarating racing experience ever created. Race through neon-lit cityscapes, treacherous mountain passes, and futuristic highways at breakneck speeds. Customize your vehicle with hundreds of parts and compete online against racers worldwide.",
     releaseDate: "2025-09-01",
     developer: "Velocity Games",
@@ -88,7 +88,7 @@ export const games: Game[] = [
     price: "$19.99",
     rating: 5,
     genre: "Horror Survival",
-    platforms: ["PC", "Laptop"],
+    platforms: ["PC", "Mobile"],
     description: "You wake up in an abandoned research facility with no memory of how you got there. Something lurks in the corridors — something that reacts to sound, light, and your fear. With limited resources and no weapons, your only option is to survive. Every playthrough generates new scares.",
     releaseDate: "2025-10-31",
     developer: "Nightmare Factory",
@@ -119,7 +119,7 @@ export const games: Game[] = [
     originalPrice: "$59.99",
     rating: 4,
     genre: "Strategy",
-    platforms: ["PC", "Laptop"],
+    platforms: ["PC", "Mobile"],
     description: "Command massive armies of mechs, drones, and infantry in the ultimate sci-fi strategy experience. Build your base, research devastating weapons, and lead your forces to victory across 50+ campaign missions or test your tactical prowess online against players worldwide.",
     releaseDate: "2025-08-10",
     developer: "Iron Grid Games",
@@ -134,7 +134,7 @@ export const games: Game[] = [
     price: "$0.00",
     rating: 4,
     genre: "Battle Royale",
-    platforms: ["PC", "PlayStation", "Laptop"],
+    platforms: ["PC", "PlayStation", "Mobile"],
     description: "Drop into a world of chaos. 100 warriors enter, only one leaves. With mythological weapons, elemental abilities, and a shrinking battlefield of destruction, Arena Legends redefines the battle royale genre. Free to play with seasonal battle passes and cosmetics.",
     releaseDate: "2025-06-01",
     developer: "Storm Interactive",
@@ -164,7 +164,7 @@ export const games: Game[] = [
     price: "$49.99",
     rating: 4,
     genre: "Sports",
-    platforms: ["PlayStation", "PC", "Laptop"],
+    platforms: ["PlayStation", "PC", "Mobile"],
     description: "The beautiful game, perfected. With hyper-realistic physics, intelligent AI teammates, and the most authentic football experience ever created. Featuring licensed leagues, clubs, and over 20,000 real players. Build your ultimate team and dominate online.",
     releaseDate: "2025-09-15",
     developer: "GoalPost Games",
@@ -179,7 +179,7 @@ export const games: Game[] = [
     price: "$44.99",
     rating: 5,
     genre: "Sci-Fi Exploration",
-    platforms: ["PC", "Laptop"],
+    platforms: ["PC", "Mobile"],
     description: "Explore a procedurally generated universe with billions of unique planets. Mine resources, build space stations, trade with alien civilizations, and chart your own course through the cosmos. The universe is yours to discover in this breathtaking space exploration adventure.",
     releaseDate: "2025-12-01",
     developer: "Cosmos Interactive",
@@ -210,7 +210,7 @@ export const games: Game[] = [
     originalPrice: "$49.99",
     rating: 5,
     genre: "Zombie Survival",
-    platforms: ["PC", "PlayStation", "Laptop"],
+    platforms: ["PC", "PlayStation", "Mobile"],
     description: "The dead have risen. Survive in a massive open world overrun by the undead. Scavenge for supplies, build fortified shelters, team up with other survivors, and fight back against increasingly dangerous zombie mutations. Every night brings new horrors.",
     releaseDate: "2025-10-13",
     developer: "Nightmare Factory",
@@ -220,10 +220,24 @@ export const games: Game[] = [
 ];
 
 export function getGameById(id: string): Game | undefined {
-  return games.find((g) => g.id === id);
+  return getGameByIdFromList(games, id);
 }
 
 export function getGamesByPlatform(platform: Platform | "All"): Game[] {
-  if (platform === "All") return games;
-  return games.filter((g) => g.platforms.includes(platform));
+  return getGamesByPlatformFromList(games, platform);
+}
+
+export function getGameByIdFromList(list: Game[], id: string): Game | undefined {
+  return list.find((game) => game.id === id);
+}
+
+export function getGamesByPlatformFromList(
+  list: Game[],
+  platform: Platform | "All",
+): Game[] {
+  if (platform === "All") {
+    return list;
+  }
+
+  return list.filter((game) => game.platforms.includes(platform));
 }

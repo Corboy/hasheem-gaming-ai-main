@@ -1,7 +1,12 @@
-import heroBg from "@/assets/hero-bg.jpg";
 import { ChevronRight, Zap } from "lucide-react";
+import heroBg from "@/assets/hero-bg.jpg";
+import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import { trackEvent } from "@/lib/analytics";
 
 const HeroSection = () => {
+  const { settings } = useSiteSettings();
+  const hero = settings.hero;
+
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
       <img
@@ -16,34 +21,47 @@ const HeroSection = () => {
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
             <Zap className="h-4 w-4 text-primary" />
             <span className="font-body text-sm font-semibold uppercase tracking-wider text-primary">
-              New Releases Available
+              {hero.badgeText}
             </span>
           </div>
 
           <h1 className="mb-6 font-display text-5xl font-black uppercase leading-tight tracking-tight text-foreground md:text-7xl">
-            Level Up Your{" "}
-            <span className="text-primary neon-text">Gaming</span>{" "}
-            Experience
+            {hero.headingLead}{" "}
+            <span className="text-primary neon-text">{hero.headingAccent}</span>{" "}
+            {hero.headingTail}
           </h1>
 
           <p className="mb-8 max-w-lg font-body text-lg font-medium leading-relaxed text-muted-foreground md:text-xl">
-            Discover the latest titles, exclusive deals, and unbeatable prices.
-            Your next adventure starts at HASHEEM GAMING.
+            {hero.description}
           </p>
 
           <div className="flex flex-wrap gap-4">
             <a
-              href="#store"
+              href={hero.primaryCtaHref}
               className="group inline-flex items-center gap-2 rounded-md bg-primary px-8 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary-foreground transition-all hover:shadow-[var(--neon-glow-strong)]"
+              onClick={() =>
+                trackEvent({
+                  action: "hero_primary_cta",
+                  category: "Conversion",
+                  label: hero.primaryCtaLabel,
+                })
+              }
             >
-              Browse Store
+              {hero.primaryCtaLabel}
               <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a
-              href="#deals"
+              href={hero.secondaryCtaHref}
               className="inline-flex items-center gap-2 rounded-md border border-border bg-secondary px-8 py-3 font-display text-sm font-bold uppercase tracking-wider text-foreground transition-all hover:border-primary/50 hover:shadow-[var(--neon-glow)]"
+              onClick={() =>
+                trackEvent({
+                  action: "hero_secondary_cta",
+                  category: "Conversion",
+                  label: hero.secondaryCtaLabel,
+                })
+              }
             >
-              Weekly Deals
+              {hero.secondaryCtaLabel}
             </a>
           </div>
         </div>

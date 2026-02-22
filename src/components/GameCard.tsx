@@ -2,8 +2,12 @@ import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Game } from "@/data/games";
+import { trackEvent } from "@/lib/analytics";
+import { formatPriceForDisplay, isFreePrice } from "@/lib/pricing";
 
 const GameCard = ({ id, title, image, price, originalPrice, rating, genre, platforms }: Game) => {
+  const isFree = isFreePrice(price);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -14,6 +18,7 @@ const GameCard = ({ id, title, image, price, originalPrice, rating, genre, platf
       <Link
         to={`/game/${id}`}
         className="game-card-hover group block cursor-pointer overflow-hidden rounded-lg border border-border bg-card"
+        onClick={() => trackEvent({ action: "select_item", category: "Commerce", label: title })}
       >
         <div className="relative aspect-[3/4] overflow-hidden">
           <img
@@ -28,7 +33,7 @@ const GameCard = ({ id, title, image, price, originalPrice, rating, genre, platf
               SALE
             </div>
           )}
-          {price === "$0.00" && (
+          {isFree && (
             <div className="absolute left-2 top-2 rounded bg-primary px-2 py-1 font-display text-xs font-bold text-primary-foreground">
               FREE
             </div>
@@ -63,10 +68,12 @@ const GameCard = ({ id, title, image, price, originalPrice, rating, genre, platf
           </div>
           <div className="flex items-center gap-2">
             <span className="font-display text-lg font-bold text-foreground">
-              {price === "$0.00" ? "FREE" : price}
+              {formatPriceForDisplay(price)}
             </span>
             {originalPrice && (
-              <span className="font-body text-sm text-muted-foreground line-through">{originalPrice}</span>
+              <span className="font-body text-sm text-muted-foreground line-through">
+                {formatPriceForDisplay(originalPrice)}
+              </span>
             )}
           </div>
         </div>
