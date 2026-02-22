@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { useCommerce } from "@/contexts/CommerceContext";
-import { useSiteSettings } from "@/contexts/SiteSettingsContext";
+import { useGameCatalog } from "@/contexts/GameCatalogContext";
+import { useOrders } from "@/contexts/OrdersContext";
 import { trackEvent } from "@/lib/analytics";
-import { formatPriceForDisplay, formatTshAmount, parsePriceToTshAmount } from "@/lib/pricing";
+import { formatPriceForDisplay, formatTZS, parsePriceToAmount } from "@/lib/pricing";
 
 const CartDrawer = () => {
   const {
@@ -16,16 +17,17 @@ const CartDrawer = () => {
     removeFromCart,
     clearCart,
   } = useCommerce();
-  const { catalogGames } = useSiteSettings();
+  const { games } = useGameCatalog();
+  const { createOrder } = useOrders();
 
   const detailedItems = cartItems
     .map((item) => {
-      const game = catalogGames.find((entry) => entry.id === item.gameId);
+      const game = games.find((entry) => entry.id === item.gameId);
       if (!game) {
         return null;
       }
 
-      const unitPrice = parsePriceToTshAmount(game.price);
+      const unitPrice = parsePriceToAmount(game.price);
       return {
         ...item,
         game,
@@ -50,8 +52,8 @@ const CartDrawer = () => {
         aria-label="Close cart drawer"
       />
 
-      <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-border bg-background shadow-2xl">
-        <header className="flex items-center justify-between border-b border-border px-5 py-4">
+      <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-white/10 bg-background shadow-2xl">
+        <header className="flex items-center justify-between border-b border-white/10 px-5 py-4">
           <div>
             <h3 className="font-display text-lg font-bold uppercase tracking-wide text-foreground">
               Your Cart
@@ -71,7 +73,7 @@ const CartDrawer = () => {
 
         <div className="flex-1 space-y-4 overflow-y-auto px-5 py-4">
           {detailedItems.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-card p-8 text-center">
+            <div className="rounded-xl border border-dashed border-white/10 bg-card p-8 text-center">
               <ShoppingBag className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
               <p className="font-body text-sm text-muted-foreground">
                 Your cart is empty. Add a game to get started.
@@ -79,7 +81,7 @@ const CartDrawer = () => {
             </div>
           ) : (
             detailedItems.map((item) => (
-              <div key={item.gameId} className="rounded-xl border border-border bg-card p-3">
+              <div key={item.gameId} className="rounded-xl border border-white/10 bg-card p-3 transition-transform duration-300 hover:-translate-y-0.5">
                 <div className="flex gap-3">
                   <img
                     src={item.game.image}
@@ -101,7 +103,7 @@ const CartDrawer = () => {
                     </p>
 
                     <div className="mt-2 flex items-center justify-between">
-                      <div className="inline-flex items-center rounded-md border border-border">
+                      <div className="inline-flex items-center rounded-md border border-white/10">
                         <button
                           type="button"
                           className="px-2 py-1 text-muted-foreground hover:text-foreground"
@@ -137,15 +139,15 @@ const CartDrawer = () => {
           )}
         </div>
 
-        <footer className="space-y-3 border-t border-border px-5 py-4">
+        <footer className="space-y-3 border-t border-white/10 px-5 py-4">
           <div className="flex items-center justify-between">
             <span className="font-body text-sm text-muted-foreground">Subtotal</span>
-            <span className="font-display text-xl font-black text-foreground">{formatTshAmount(subtotal)}</span>
+            <span className="font-display text-xl font-black text-foreground">{formatTZS(subtotal)}</span>
           </div>
 
           <button
             type="button"
-            className="w-full rounded-md bg-primary px-4 py-2.5 font-display text-sm font-bold uppercase tracking-wide text-primary-foreground transition-all hover:shadow-[var(--neon-glow)]"
+            className="button-lift w-full rounded-md bg-primary px-4 py-2.5 font-body text-sm font-semibold text-primary-foreground shadow-[var(--primary-shadow)]"
             onClick={() => {
               if (detailedItems.length === 0) {
                 toast.error("Your cart is empty.");
@@ -158,7 +160,21 @@ const CartDrawer = () => {
                 label: `${detailedItems.length} items`,
                 value: Math.round(subtotal),
               });
-              toast.success("Checkout flow is ready for payment integration.");
+
+              createOrder({
+                customerName: "Walk-in Customer",
+                customerPhone: "N/A",
+                items: detailedItems.map((item) => ({
+                  gameId: item.game.id,
+                  title: item.game.title,
+                  quantity: item.quantity,
+                  unitPrice: item.unitPrice,
+                  image: item.game.image,
+                  category: item.game.category ?? "PC",
+                })),
+              });
+              clearCart();
+              toast.success("Checkout complete. Order saved.");
             }}
           >
             Proceed to Checkout

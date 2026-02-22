@@ -7,6 +7,11 @@ import { formatPriceForDisplay, isFreePrice } from "@/lib/pricing";
 
 const GameCard = ({ id, title, image, price, originalPrice, rating, genre, platforms }: Game) => {
   const isFree = isFreePrice(price);
+  const primaryCategory = platforms[0] ?? "PC";
+  const hasDiscount = Boolean(originalPrice) && !isFree;
+  const stockLeft = hasDiscount
+    ? (id.split("").reduce((total, char) => total + char.charCodeAt(0), 0) % 7) + 3
+    : 0;
 
   return (
     <motion.div
@@ -17,7 +22,7 @@ const GameCard = ({ id, title, image, price, originalPrice, rating, genre, platf
     >
       <Link
         to={`/game/${id}`}
-        className="game-card-hover group block cursor-pointer overflow-hidden rounded-lg border border-border bg-card"
+        className="game-card-hover group block cursor-pointer overflow-hidden rounded-xl border border-white/5 bg-card"
         onClick={() => trackEvent({ action: "select_item", category: "Commerce", label: title })}
       >
         <div className="relative aspect-[3/4] overflow-hidden">
@@ -27,38 +32,34 @@ const GameCard = ({ id, title, image, price, originalPrice, rating, genre, platf
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-          {originalPrice && (
-            <div className="absolute right-2 top-2 rounded bg-accent px-2 py-1 font-display text-xs font-bold text-accent-foreground">
+          <div className="absolute inset-0 bg-gradient-to-t from-card/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+          <div className="absolute left-2 top-2">
+            <span className="rounded-full border border-white/15 bg-background/80 px-2 py-1 font-body text-[11px] font-semibold text-foreground backdrop-blur">
+              {primaryCategory}
+            </span>
+          </div>
+
+          {hasDiscount && (
+            <div className="absolute right-2 top-2 rounded-full bg-primary px-2.5 py-1 font-body text-[11px] font-semibold text-primary-foreground">
               SALE
             </div>
           )}
           {isFree && (
-            <div className="absolute left-2 top-2 rounded bg-primary px-2 py-1 font-display text-xs font-bold text-primary-foreground">
+            <div className="absolute right-2 top-2 rounded-full border border-white/15 bg-background/90 px-2.5 py-1 font-body text-[11px] font-semibold text-foreground">
               FREE
             </div>
           )}
-          {/* Platform badges */}
-          <div className="absolute bottom-2 left-2 flex gap-1">
-            {platforms.map((p) => (
-              <span
-                key={p}
-                className="rounded bg-background/80 px-1.5 py-0.5 font-body text-[10px] font-bold uppercase text-foreground backdrop-blur-sm"
-              >
-                {p === "PlayStation" ? "PS" : p}
-              </span>
-            ))}
-          </div>
         </div>
 
-        <div className="p-4">
-          <span className="mb-1 block font-body text-xs font-semibold uppercase tracking-widest text-primary">
+        <div className="p-4 md:p-5">
+          <span className="mb-1 block font-body text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
             {genre}
           </span>
-          <h3 className="mb-2 font-display text-sm font-bold uppercase tracking-wide text-foreground line-clamp-1">
+          <h3 className="mb-2 font-display text-base font-semibold text-foreground line-clamp-1">
             {title}
           </h3>
-          <div className="mb-3 flex items-center gap-1">
+          <div className="mb-4 flex items-center gap-1">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
                 key={i}
@@ -66,16 +67,27 @@ const GameCard = ({ id, title, image, price, originalPrice, rating, genre, platf
               />
             ))}
           </div>
-          <div className="flex items-center gap-2">
-            <span className="font-display text-lg font-bold text-foreground">
+          <div className="flex items-end gap-2">
+            <span className="font-display text-2xl font-semibold leading-none text-foreground">
               {formatPriceForDisplay(price)}
             </span>
-            {originalPrice && (
+            {hasDiscount && originalPrice && (
               <span className="font-body text-sm text-muted-foreground line-through">
                 {formatPriceForDisplay(originalPrice)}
               </span>
             )}
           </div>
+
+          {hasDiscount && (
+            <div className="mt-3 flex items-center justify-between gap-2">
+              <span className="rounded-full bg-primary/10 px-2 py-1 font-body text-[11px] font-semibold text-primary">
+                Limited-time deal
+              </span>
+              <span className="font-body text-xs font-semibold text-muted-foreground">
+                Only <span className="text-foreground">{stockLeft}</span> left
+              </span>
+            </div>
+          )}
         </div>
       </Link>
     </motion.div>

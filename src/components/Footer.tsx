@@ -7,7 +7,7 @@ const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <footer className="border-t border-border bg-card py-12">
+    <footer className="border-t border-white/10 bg-card py-14">
       <div className="container mx-auto px-4">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
@@ -17,7 +17,7 @@ const Footer = () => {
               className="flex items-center gap-2"
             >
               <Gamepad2 className="h-6 w-6 text-primary" />
-              <span className="font-display text-lg font-bold tracking-wider text-primary">
+              <span className="font-display text-lg font-semibold tracking-tight text-foreground">
                 {settings.brandName}
               </span>
             </button>
@@ -27,7 +27,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="mb-3 font-display text-xs font-bold uppercase tracking-wide text-foreground">
+            <h4 className="mb-3 font-display text-sm font-semibold text-foreground">
               Quick Links
             </h4>
             <div className="grid grid-cols-2 gap-2">
@@ -57,7 +57,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="mb-3 font-display text-xs font-bold uppercase tracking-wide text-foreground">
+            <h4 className="mb-3 font-display text-sm font-semibold text-foreground">
               Support
             </h4>
             <p className="font-body text-sm text-muted-foreground">{settings.supportEmail}</p>
@@ -65,7 +65,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-border pt-4">
+        <div className="mt-8 border-t border-white/10 pt-4">
           <p className="font-body text-xs text-muted-foreground">
             © 2026 {settings.brandName}. All rights reserved.
           </p>

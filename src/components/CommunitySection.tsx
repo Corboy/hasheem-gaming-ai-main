@@ -21,22 +21,22 @@ const testimonials = [
 
 const CommunitySection = () => {
   return (
-    <section id="community" className="border-y border-border bg-card/50 py-20">
+    <section id="community" className="section-shell border-y border-white/5 bg-card/45">
       <div className="container mx-auto px-4">
         <div className="mb-10 text-center">
-          <h2 className="font-display text-3xl font-bold uppercase tracking-wider text-foreground md:text-4xl">
-            Community <span className="text-primary">Reviews</span>
+          <h2 className="font-display text-3xl font-semibold text-foreground md:text-4xl">
+            Customer Reviews
           </h2>
-          <p className="mt-3 font-body text-lg text-muted-foreground">
+          <p className="mt-3 font-body text-base text-muted-foreground md:text-lg">
             Feedback from players using HASHEEM GAMING every week.
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-3">
           {testimonials.map((item, index) => (
             <motion.article
               key={item.name}
-              className="rounded-xl border border-border bg-background/70 p-5"
+              className="rounded-2xl border border-white/5 bg-background/80 p-6"
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

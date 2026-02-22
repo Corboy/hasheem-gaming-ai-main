@@ -201,6 +201,7 @@ function normalizeSettings(input: unknown): SiteSettings {
           return { label, href };
         })
         .filter((item): item is { label: string; href: string } => item !== null)
+        .filter((item) => item.href !== "#staff")
     : fallback.navLinks;
 
   const stats = Array.isArray(record.stats) && record.stats.length > 0
@@ -325,10 +326,6 @@ function normalizeSettings(input: unknown): SiteSettings {
       links: footerLinks,
     },
     features: {
-      assistantEnabled:
-        typeof maybeFeatures.assistantEnabled === "boolean"
-          ? maybeFeatures.assistantEnabled
-          : fallback.features.assistantEnabled,
       communitySectionEnabled:
         typeof maybeFeatures.communitySectionEnabled === "boolean"
           ? maybeFeatures.communitySectionEnabled

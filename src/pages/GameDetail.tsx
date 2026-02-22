@@ -15,7 +15,9 @@ import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HasheemAI from "@/components/HasheemAI";
+import GameCommentsSection from "@/components/GameCommentsSection";
 import { useCommerce } from "@/contexts/CommerceContext";
+import { useGameCatalog } from "@/contexts/GameCatalogContext";
 import { useSiteSettings } from "@/contexts/SiteSettingsContext";
 import { getGameByIdFromList } from "@/data/games";
 import { useSeo } from "@/hooks/use-seo";
@@ -31,9 +33,10 @@ const platformIcons: Record<string, ReactNode> = {
 
 const GameDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { settings, catalogGames } = useSiteSettings();
+  const { settings } = useSiteSettings();
+  const { publishedGames } = useGameCatalog();
   const { addToCart, openCart, toggleWishlist, isWishlisted } = useCommerce();
-  const game = getGameByIdFromList(catalogGames, id || "");
+  const game = getGameByIdFromList(publishedGames, id || "");
   const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
@@ -80,12 +83,16 @@ const GameDetail = () => {
 
   const wishlisted = isWishlisted(game.id);
   const isFree = isFreePrice(game.price);
+  const hasDiscount = Boolean(game.originalPrice) && !isFree;
+  const stockLeft = hasDiscount
+    ? (game.id.split("").reduce((total, char) => total + char.charCodeAt(0), 0) % 7) + 3
+    : 0;
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <div className="relative h-[50vh] overflow-hidden">
+      <div className="relative h-[48vh] overflow-hidden border-b border-white/5">
         <img
           src={game.screenshots[selectedImage] || game.image}
           alt={game.title}
@@ -114,17 +121,17 @@ const GameDetail = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="mb-2 flex flex-wrap items-center gap-2">
-              <span className="rounded bg-primary/20 px-2 py-0.5 font-body text-xs font-semibold uppercase tracking-widest text-primary">
+              <span className="rounded-full border border-white/10 bg-card px-2.5 py-1 font-body text-xs font-semibold text-primary">
                 {game.genre}
               </span>
-              {game.originalPrice && (
-                <span className="rounded bg-accent/20 px-2 py-0.5 font-body text-xs font-bold uppercase text-accent">
+              {hasDiscount && (
+                <span className="rounded-full bg-primary/15 px-2.5 py-1 font-body text-xs font-semibold text-primary">
                   Sale
                 </span>
               )}
             </div>
 
-            <h1 className="mb-4 font-display text-3xl font-black uppercase tracking-tight text-foreground md:text-5xl">
+            <h1 className="mb-4 font-display text-3xl font-semibold text-foreground md:text-5xl">
               {game.title}
             </h1>
 
@@ -167,8 +174,8 @@ const GameDetail = () => {
                   onClick={() => setSelectedImage(index)}
                   className={`overflow-hidden rounded-lg border-2 transition-all ${
                     selectedImage === index
-                      ? "border-primary neon-border"
-                      : "border-border hover:border-primary/40"
+                      ? "border-primary"
+                      : "border-white/10 hover:border-white/25"
                   }`}
                 >
                   <img
@@ -194,6 +201,8 @@ const GameDetail = () => {
                 </span>
               ))}
             </div>
+
+            <GameCommentsSection gameId={game.id} />
           </motion.div>
 
           <motion.div
@@ -201,7 +210,7 @@ const GameDetail = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="sticky top-20 rounded-xl border border-border bg-card p-6">
+            <div className="sticky top-20 rounded-xl border border-white/10 bg-card p-6">
               <img
                 src={game.image}
                 alt={game.title}
@@ -209,20 +218,29 @@ const GameDetail = () => {
                 loading="lazy"
               />
 
-              <div className="mb-4 flex items-end gap-3">
-                <span className="font-display text-3xl font-black text-foreground">
+              <div className="mb-3 flex items-end gap-3">
+                <span className="font-display text-4xl font-semibold text-foreground">
                   {formatPriceForDisplay(game.price)}
                 </span>
-                {game.originalPrice && (
+                {hasDiscount && game.originalPrice && (
                   <span className="mb-1 font-body text-lg text-muted-foreground line-through">
                     {formatPriceForDisplay(game.originalPrice)}
                   </span>
                 )}
               </div>
 
+              {hasDiscount && (
+                <div className="mb-4 flex items-center justify-between rounded-lg border border-white/10 bg-background px-3 py-2">
+                  <span className="font-body text-xs font-semibold text-primary">Limited-time deal</span>
+                  <span className="font-body text-xs text-muted-foreground">
+                    Only <span className="font-semibold text-foreground">{stockLeft}</span> left
+                  </span>
+                </div>
+              )}
+
               <button
                 type="button"
-                className="mb-3 flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-primary-foreground transition-all hover:shadow-[var(--neon-glow-strong)]"
+                className="button-lift mb-3 flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 font-body text-sm font-semibold text-primary-foreground shadow-[var(--primary-shadow)]"
                 onClick={() => {
                   addToCart(game.id);
                   openCart();

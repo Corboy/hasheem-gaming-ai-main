@@ -60,7 +60,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-background/85 backdrop-blur-lg">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <button
           type="button"
@@ -68,8 +68,8 @@ const Navbar = () => {
           className="flex items-center gap-2"
           aria-label="Go to homepage"
         >
-          <Gamepad2 className="h-7 w-7 text-primary neon-text" />
-          <span className="font-display text-lg font-bold tracking-wider text-primary neon-text">
+          <Gamepad2 className="h-6 w-6 text-primary" />
+          <span className="font-display text-lg font-semibold tracking-tight text-foreground">
             {settings.brandName}
           </span>
         </button>
@@ -80,7 +80,7 @@ const Navbar = () => {
               key={`${link.label}-${link.href}`}
               type="button"
               onClick={() => handleLinkClick(link.href)}
-              className="font-body text-sm font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
+              className="font-body text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
             </button>
@@ -90,7 +90,7 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            className="rounded-md p-2 text-muted-foreground transition-colors hover:text-primary"
+            className="button-lift rounded-md p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             onClick={runSearchAction}
             aria-label="Search store"
           >
@@ -99,7 +99,7 @@ const Navbar = () => {
 
           <button
             type="button"
-            className="relative rounded-md p-2 text-muted-foreground transition-colors hover:text-primary"
+            className="button-lift relative rounded-md p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             onClick={() => {
               openCart();
               trackEvent({ action: "open_cart", category: "Commerce", label: "Navbar Cart" });
@@ -108,7 +108,7 @@ const Navbar = () => {
           >
             <ShoppingCart className="h-5 w-5" />
             {cartCount > 0 && (
-              <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 font-body text-[10px] font-bold text-primary-foreground">
+              <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 font-body text-[10px] font-semibold text-primary-foreground">
                 {cartCount}
               </span>
             )}
@@ -126,13 +126,13 @@ const Navbar = () => {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-border bg-background/95 backdrop-blur-xl md:hidden">
+        <div className="border-t border-white/10 bg-background/95 backdrop-blur-xl md:hidden">
           <div className="flex flex-col gap-1 p-4">
             {settings.navLinks.map((link) => (
               <button
                 key={`${link.label}-${link.href}-mobile`}
                 type="button"
-                className="rounded-md px-4 py-3 text-left font-body text-sm font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
+                className="rounded-md px-4 py-3 text-left font-body text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 onClick={() => {
                   handleLinkClick(link.href);
                   setMobileOpen(false);
@@ -144,7 +144,7 @@ const Navbar = () => {
 
             <button
               type="button"
-              className="rounded-md px-4 py-3 text-left font-body text-sm font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
+              className="rounded-md px-4 py-3 text-left font-body text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               onClick={() => {
                 runSearchAction();
                 setMobileOpen(false);
@@ -155,7 +155,7 @@ const Navbar = () => {
 
             <button
               type="button"
-              className="rounded-md px-4 py-3 text-left font-body text-sm font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
+              className="rounded-md px-4 py-3 text-left font-body text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               onClick={() => {
                 openCart();
                 toast.success("Cart opened.");

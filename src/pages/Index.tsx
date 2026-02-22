@@ -5,9 +5,9 @@ import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import GameCatalog from "@/components/GameCatalog";
 import FeaturedBanner from "@/components/FeaturedBanner";
-import PerksSection from "@/components/PerksSection";
 import CommunitySection from "@/components/CommunitySection";
 import SupportSection from "@/components/SupportSection";
+import PerksSection from "@/components/PerksSection";
 import HasheemAI from "@/components/HasheemAI";
 import Footer from "@/components/Footer";
 
@@ -30,8 +30,8 @@ const Index = () => {
       <GameCatalog />
       <FeaturedBanner />
       {settings.features.communitySectionEnabled && <CommunitySection />}
-      <PerksSection />
       <SupportSection />
+      <PerksSection />
       <Footer />
       <HasheemAI />
     </div>

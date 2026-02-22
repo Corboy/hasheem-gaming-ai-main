@@ -1,11 +1,15 @@
-const USD_TO_TSH_RATE = 2600;
+const USD_TO_TZS_RATE = 2600;
 
 function toNumericValue(raw: string): number {
   const normalized = Number(raw.replace(/[^0-9.]/g, ""));
   return Number.isFinite(normalized) ? normalized : 0;
 }
 
-export function parsePriceToTshAmount(value: string): number {
+export function parsePriceToAmount(value: string | number | null | undefined): number {
+  if (typeof value === "number") {
+    return Number.isFinite(value) && value > 0 ? Math.round(value) : 0;
+  }
+
   if (!value) {
     return 0;
   }
@@ -20,36 +24,41 @@ export function parsePriceToTshAmount(value: string): number {
     return 0;
   }
 
-  if (value.includes("$")) {
-    return Math.round(numericValue * USD_TO_TSH_RATE);
+  if (value.includes("$") || lowered.includes("usd")) {
+    return Math.round(numericValue * USD_TO_TZS_RATE);
   }
 
   return Math.round(numericValue);
 }
 
-export function formatTshAmount(amount: number): string {
-  return `TSh ${new Intl.NumberFormat("en-TZ", { maximumFractionDigits: 0 }).format(
+export function formatTZS(amount: number): string {
+  return `TZS ${new Intl.NumberFormat("en-TZ", { maximumFractionDigits: 0 }).format(
     Math.max(0, Math.round(amount)),
   )}`;
 }
 
-export function toTshPriceString(amount: number): string {
+export function toPriceString(amount: number): string {
   if (!Number.isFinite(amount) || amount <= 0) {
     return "FREE";
   }
 
-  return formatTshAmount(amount);
+  return formatTZS(amount);
 }
 
-export function formatPriceForDisplay(value: string): string {
-  const amount = parsePriceToTshAmount(value);
+export function formatPriceForDisplay(value: string | number): string {
+  const amount = parsePriceToAmount(value);
   if (amount <= 0) {
     return "FREE";
   }
 
-  return formatTshAmount(amount);
+  return formatTZS(amount);
 }
 
-export function isFreePrice(value: string): boolean {
-  return parsePriceToTshAmount(value) <= 0;
+export function isFreePrice(value: string | number): boolean {
+  return parsePriceToAmount(value) <= 0;
 }
+
+// Backwards-compatible exports used in older files.
+export const parsePriceToTshAmount = parsePriceToAmount;
+export const formatTshAmount = formatTZS;
+export const toTshPriceString = toPriceString;

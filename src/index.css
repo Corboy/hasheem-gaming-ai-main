@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,48 +6,51 @@
 
 @layer base {
   :root {
-    --background: 220 20% 6%;
-    --foreground: 180 10% 92%;
+    --background: 214 29% 6%;
+    --foreground: 210 40% 98%;
 
-    --card: 220 18% 10%;
-    --card-foreground: 180 10% 92%;
+    --card: 215 29% 10%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 220 18% 10%;
-    --popover-foreground: 180 10% 92%;
+    --popover: 215 29% 10%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 170 100% 50%;
-    --primary-foreground: 220 20% 6%;
+    --primary: 350 96% 43%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 16%;
-    --secondary-foreground: 180 10% 92%;
+    --secondary: 215 27% 12%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 220 15% 14%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 214 26% 15%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 330 90% 55%;
+    --accent: 350 96% 43%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 170 100% 50%;
+    --border: 216 22% 20%;
+    --input: 216 22% 20%;
+    --ring: 350 96% 43%;
 
     --radius: 0.5rem;
 
-    --neon-glow: 0 0 20px hsl(170 100% 50% / 0.4), 0 0 60px hsl(170 100% 50% / 0.15);
-    --neon-glow-strong: 0 0 10px hsl(170 100% 50% / 0.6), 0 0 40px hsl(170 100% 50% / 0.3), 0 0 80px hsl(170 100% 50% / 0.1);
-    --accent-glow: 0 0 20px hsl(330 90% 55% / 0.4), 0 0 60px hsl(330 90% 55% / 0.15);
+    --soft-shadow: 0 10px 28px rgb(2 6 23 / 30%);
+    --elevated-shadow: 0 16px 36px rgb(2 6 23 / 42%);
+    --primary-shadow: 0 10px 24px rgb(217 4 41 / 24%);
+    --neon-glow: var(--soft-shadow);
+    --neon-glow-strong: var(--elevated-shadow);
+    --accent-glow: var(--primary-shadow);
 
-    --sidebar-background: 220 18% 10%;
-    --sidebar-foreground: 180 10% 92%;
-    --sidebar-primary: 170 100% 50%;
-    --sidebar-primary-foreground: 220 20% 6%;
-    --sidebar-accent: 220 15% 16%;
-    --sidebar-accent-foreground: 180 10% 92%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 170 100% 50%;
+    --sidebar-background: 215 29% 10%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 350 96% 43%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 27% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 216 22% 20%;
+    --sidebar-ring: 350 96% 43%;
   }
 }
 
@@ -62,54 +65,67 @@
 
   body {
     @apply bg-background text-foreground font-body;
+    font-feature-settings: "cv11", "ss01";
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: "Sora", sans-serif;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: 'Orbitron', sans-serif;
+    font-family: "Sora", sans-serif;
   }
 
   .font-body {
-    font-family: 'Rajdhani', sans-serif;
-  }
-
-  .neon-text {
-    text-shadow: 0 0 10px hsl(170 100% 50% / 0.6), 0 0 30px hsl(170 100% 50% / 0.3);
-  }
-
-  .neon-border {
-    box-shadow: var(--neon-glow);
-    border-color: hsl(170 100% 50% / 0.5);
-  }
-
-  .neon-border-strong {
-    box-shadow: var(--neon-glow-strong);
-    border-color: hsl(170 100% 50%);
-  }
-
-  .accent-glow {
-    box-shadow: var(--accent-glow);
+    font-family: "Inter", sans-serif;
   }
 
   .game-card-hover {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .game-card-hover:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: var(--neon-glow-strong);
+    transform: translateY(-4px);
+    box-shadow: var(--soft-shadow);
+    border-color: rgb(248 250 252 / 14%);
   }
 
   .gradient-hero {
-    background: linear-gradient(180deg, transparent 0%, hsl(220 20% 6% / 0.4) 40%, hsl(220 20% 6% / 0.95) 100%);
+    background:
+      radial-gradient(circle at 20% 20%, rgb(217 4 41 / 12%), transparent 45%),
+      linear-gradient(180deg, rgb(11 15 20 / 78%) 0%, rgb(11 15 20 / 96%) 100%);
   }
 
   .gradient-section {
-    background: linear-gradient(180deg, hsl(220 20% 6%) 0%, hsl(220 18% 8%) 50%, hsl(220 20% 6%) 100%);
+    background: linear-gradient(180deg, rgb(11 15 20 / 100%) 0%, rgb(15 21 30 / 100%) 100%);
+  }
+
+  .surface-panel {
+    background: rgb(22 29 38 / 85%);
+    border: 1px solid rgb(248 250 252 / 6%);
+    box-shadow: var(--soft-shadow);
+  }
+
+  .section-shell {
+    @apply py-16 md:py-24;
+  }
+
+  .button-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .button-lift:hover {
+    transform: translateY(-2px);
+  }
+
+  .pattern-grid {
+    background-image:
+      linear-gradient(rgb(148 163 184 / 8%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(148 163 184 / 8%) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(to bottom, rgb(0 0 0 / 85%), transparent);
   }
 }

@@ -52,7 +52,6 @@ export interface FooterSettings {
 }
 
 export interface FeatureToggles {
-  assistantEnabled: boolean;
   communitySectionEnabled: boolean;
 }
 

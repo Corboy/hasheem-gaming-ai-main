@@ -52,7 +52,7 @@ export const defaultSiteSettings: SiteSettings = {
     { icon: "credit-card", title: "Transparent Pricing", desc: "Clear pricing with highlighted savings on every deal." },
     { icon: "headphones", title: "24/7 Support", desc: "Get help anytime through chat or email support." },
   ],
-  featuredGameId: "netrunner",
+  featuredGameId: "black-myth-wukong",
   seo: {
     defaultTitle: "HASHEEM GAMING | Digital Game Store",
     defaultDescription:
@@ -73,7 +73,6 @@ export const defaultSiteSettings: SiteSettings = {
     ],
   },
   features: {
-    assistantEnabled: true,
     communitySectionEnabled: true,
   },
   gameOverrides: createDefaultGameOverrides(),
